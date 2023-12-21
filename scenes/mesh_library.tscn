@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ysicpv4hamp6"]
+[gd_scene load_steps=19 format=3 uid="uid://ysicpv4hamp6"]
 
 [ext_resource type="PackedScene" uid="uid://d0nnrx2y4px2v" path="res://models/building-garage.glb" id="1_fboth"]
 [ext_resource type="PackedScene" uid="uid://cnycdi6t5tj01" path="res://models/building-small-a.glb" id="2_o6bv8"]
@@ -14,8 +14,9 @@
 [ext_resource type="PackedScene" uid="uid://euxdh7lkq0oj" path="res://models/road-intersection.glb" id="12_5gtmp"]
 [ext_resource type="PackedScene" uid="uid://mu30r6rmht07" path="res://models/road-split.glb" id="13_81spk"]
 [ext_resource type="PackedScene" uid="uid://5kchntr735l" path="res://models/road-straight-lightposts.glb" id="14_wijsu"]
-[ext_resource type="PackedScene" uid="uid://xix7n3qxgtsu" path="res://models/road-straight.glb" id="15_0diry"]
+[ext_resource type="PackedScene" uid="uid://b4tgtg0j2dgh8" path="res://models/road-straight.glb" id="15_0diry"]
 [ext_resource type="PackedScene" uid="uid://c5ommrdajv7gl" path="res://models/factory.glb" id="16_cg3hc"]
+[ext_resource type="PackedScene" uid="uid://drbpyi6awlwom" path="res://models/garden.glb" id="17_8ablt"]
 [ext_resource type="PackedScene" uid="uid://xix7n3qxgtsu" path="res://models/solar_panel.glb" id="17_tmn56"]
 
 [node name="MeshLibrary" type="Node3D"]
@@ -53,3 +54,5 @@
 [node name="factory" parent="." instance=ExtResource("16_cg3hc")]
 
 [node name="solar_panel" parent="." instance=ExtResource("17_tmn56")]
+
+[node name="garden" parent="." instance=ExtResource("17_8ablt")]
