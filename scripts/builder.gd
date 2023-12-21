@@ -25,12 +25,15 @@ func _ready():
 	structure_container.remove_child(structure_button)
 	
 	var mesh_library := gridmap.mesh_library
+	print("Items ", mesh_library.get_item_list())
 	for item in mesh_library.get_item_list():
 		var icon := mesh_library.get_item_preview(item)
 		var button := structure_button.duplicate()
 		button.texture_normal = icon
 		button.pressed.connect(_on_structure_button_pressed.bind(item))
 		structure_container.add_child(button)
+	
+	structure_button.queue_free()
 	
 	# Create new MeshLibrary dynamically, can also be done in the editor
 	# See: https://docs.godotengine.org/en/stable/tutorials/3d/using_gridmaps.html
@@ -152,7 +155,8 @@ func update_structure():
 	_model.position.y += 0.25
 	
 	# Focus model on hotbar
-	structure_container.get_child(index).grab_focus()
+	if index < structure_container.get_child_count():
+		structure_container.get_child(index).grab_focus()
 
 func update_cash():
 	cash_display.text = "$" + str(map.cash)
