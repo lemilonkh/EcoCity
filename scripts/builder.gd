@@ -125,9 +125,25 @@ func play_error() -> void:
 	error_player.play()
 
 # Build (place) a structure
-func action_build(gridmap_position):
+func action_build(gridmap_position: Vector3i) -> void:
 	if Input.is_action_just_pressed("build"):
 		var structure: Structure = structures[index]
+		if map.cash < structure.price:
+			play_error()
+			return
+		if happiness + structure.happiness < 0:
+			play_error()
+			return
+		if energy + structure.energy < 0:
+			play_error()
+			return
+		if emissions + structure.emissions > 100:
+			play_error()
+			return
+		if waste + structure.waste > 100:
+			play_error()
+			return
+		
 		var previous_tile: int
 		var orientation := gridmap.get_orthogonal_index_from_basis(selector.basis)
 		var was_built := false
@@ -163,13 +179,18 @@ func action_build(gridmap_position):
 				build_player.play()
 
 # Demolish (remove) a structure
-func action_demolish(gridmap_position):
+func action_demolish(gridmap_position: Vector3i):
 	if Input.is_action_just_pressed("demolish"):
 		var previous_tile: int
 		# delete decoration first
-		if decoration_grid.get_cell_item(gridmap_position) != -1:
-			previous_tile = decoration_grid.get_cell_item(gridmap_position)
-			decoration_grid.set_cell_item(gridmap_position, -1)
+		var base_item := gridmap.get_cell_item(gridmap_position)
+		if base_item == -1:
+			return
+		var decoration_pos := gridmap_position
+		decoration_pos.y = structures[base_item].decoration_height
+		if decoration_grid.get_cell_item(decoration_pos) != -1:
+			previous_tile = decoration_grid.get_cell_item(decoration_pos)
+			decoration_grid.set_cell_item(decoration_pos, -1)
 		else:
 			previous_tile = gridmap.get_cell_item(gridmap_position)
 			gridmap.set_cell_item(gridmap_position, -1)
@@ -226,7 +247,7 @@ func action_save():
 		
 		for cell in gridmap.get_used_cells():
 			var data_structure: DataStructure = DataStructure.new()
-			data_structure.position = Vector2i(cell.x, cell.z)
+			data_structure.position = cell
 			data_structure.orientation = gridmap.get_cell_item_orientation(cell)
 			data_structure.structure = gridmap.get_cell_item(cell)
 			data_structure.is_decoration = false
@@ -234,7 +255,7 @@ func action_save():
 		
 		for cell in decoration_grid.get_used_cells():
 			var data_structure: DataStructure = DataStructure.new()
-			data_structure.position = Vector2i(cell.x, cell.z)
+			data_structure.position = cell
 			data_structure.orientation = decoration_grid.get_cell_item_orientation(cell)
 			data_structure.structure = decoration_grid.get_cell_item(cell)
 			data_structure.is_decoration = true
@@ -258,11 +279,10 @@ func action_load():
 		if not map:
 			map = DataMap.new()
 		for cell in map.structures:
-			var pos := Vector3i(cell.position.x, 0, cell.position.y)
 			if cell.is_decoration:
-				decoration_grid.set_cell_item(pos, cell.structure, cell.orientation)
+				decoration_grid.set_cell_item(cell.position, cell.structure, cell.orientation)
 			else:
-				gridmap.set_cell_item(pos, cell.structure, cell.orientation)
+				gridmap.set_cell_item(cell.position, cell.structure, cell.orientation)
 		
 		happiness = map.happiness
 		energy = map.energy
