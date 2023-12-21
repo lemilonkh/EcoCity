@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="Structure" load_steps=3 format=3 uid="uid://c65ha65kdaxei"]
 
-[ext_resource type="PackedScene" uid="uid://xix7n3qxgtsu" path="res://models/solar_panel.glb" id="1_le1fa"]
+[ext_resource type="PackedScene" uid="uid://xix7n3qxgtsu" path="res://models/solar_panel.glb" id="1_wja3r"]
 [ext_resource type="Script" path="res://scripts/structure.gd" id="2_6vyo2"]
 
 [resource]
 script = ExtResource("2_6vyo2")
-model = ExtResource("1_le1fa")
+model = ExtResource("1_wja3r")
 price = 50
 emissions = 0
 energy = 10
