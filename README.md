@@ -1,8 +1,10 @@
 <p align="center"><img src="icon.png"/></p>
 
-# Starter Kit City Builder
+# EcoCity
+Environmentally focused City Builder made in Godot 4  
+Made using Kenney's Starter Kit City Builder
 
-This package includes a basic template for a 3D city builder in Godot 4.1.1.stable.official. Includes features like;
+This package includes a basic template for a 3D city builder in Godot 4.2.1.stable.official. Includes features like;
 
 - Building and removing structures
 - Smooth camera controls
