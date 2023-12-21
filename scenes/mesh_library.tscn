@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://ysicpv4hamp6"]
+[gd_scene load_steps=22 format=3 uid="uid://ysicpv4hamp6"]
 
 [ext_resource type="PackedScene" uid="uid://d0nnrx2y4px2v" path="res://models/building-garage.glb" id="1_fboth"]
 [ext_resource type="PackedScene" uid="uid://cnycdi6t5tj01" path="res://models/building-small-a.glb" id="2_o6bv8"]
@@ -18,6 +18,9 @@
 [ext_resource type="PackedScene" uid="uid://c5ommrdajv7gl" path="res://models/factory.glb" id="16_cg3hc"]
 [ext_resource type="PackedScene" uid="uid://drbpyi6awlwom" path="res://models/garden.glb" id="17_8ablt"]
 [ext_resource type="PackedScene" uid="uid://xix7n3qxgtsu" path="res://models/solar_panel.glb" id="17_tmn56"]
+[ext_resource type="PackedScene" uid="uid://p5p17wbf8j2i" path="res://models/wind_turbine.glb" id="19_3gbxm"]
+[ext_resource type="PackedScene" uid="uid://bi8628a1y1lky" path="res://models/waste_disposal.glb" id="20_ml8ul"]
+[ext_resource type="PackedScene" uid="uid://byfjk78ithoum" path="res://models/waste_disposal_split.glb" id="21_1rn8q"]
 
 [node name="MeshLibrary" type="Node3D"]
 
@@ -53,6 +56,12 @@
 
 [node name="factory" parent="." instance=ExtResource("16_cg3hc")]
 
+[node name="wind_turbine" parent="." instance=ExtResource("19_3gbxm")]
+
 [node name="solar_panel" parent="." instance=ExtResource("17_tmn56")]
 
 [node name="garden" parent="." instance=ExtResource("17_8ablt")]
+
+[node name="waste_disposal" parent="." instance=ExtResource("20_ml8ul")]
+
+[node name="waste_disposal_split" parent="." instance=ExtResource("21_1rn8q")]
