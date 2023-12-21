@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://vgwrcfy1qawf"]
+[gd_scene load_steps=28 format=3 uid="uid://vgwrcfy1qawf"]
 
 [ext_resource type="Script" path="res://scripts/builder.gd" id="1_jybm7"]
 [ext_resource type="Environment" uid="uid://jbptgqvstei3" path="res://scenes/main-environment.tres" id="1_yndf3"]
@@ -29,6 +29,27 @@ font = ExtResource("16_vlub6")
 font_size = 24
 shadow_color = Color(0, 0, 0, 0.392157)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7sdnu"]
+bg_color = Color(1, 0.666667, 0.145098, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n7ux5"]
+bg_color = Color(9.62615e-08, 0.70763, 0.658796, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81xpf"]
+bg_color = Color(0.631373, 0.827451, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [node name="Main" type="Node3D"]
 
 [node name="Builder" type="Node3D" parent="." node_paths=PackedStringArray("selector", "selector_container", "view_camera", "gridmap", "decoration_grid", "cash_display")]
@@ -39,7 +60,7 @@ selector_container = NodePath("Selector/Container")
 view_camera = NodePath("../View/Camera")
 gridmap = NodePath("../GridMap")
 decoration_grid = NodePath("../DecorationGrid")
-cash_display = NodePath("../CanvasLayer/Control/Cash")
+cash_display = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Cash")
 
 [node name="Selector" type="Node3D" parent="Builder"]
 
@@ -56,7 +77,6 @@ script = ExtResource("8_yovpv")
 
 [node name="Camera" type="Camera3D" parent="View"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
-environment = ExtResource("1_yndf3")
 fov = 20.0
 
 [node name="GridMap" type="GridMap" parent="."]
@@ -76,28 +96,81 @@ transform = Transform3D(-0.422618, -0.694272, 0.582563, 0, 0.642788, 0.766044, -
 shadow_enabled = true
 shadow_opacity = 0.75
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("1_yndf3")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
 
-[node name="CashIcon" type="TextureRect" parent="CanvasLayer/Control"]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 24.0
-offset_right = 148.0
-offset_bottom = 152.0
-scale = Vector2(0.3, 0.3)
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CashIcon" type="TextureRect" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
 texture = ExtResource("17_cjamx")
+expand_mode = 2
 
-[node name="Cash" type="Label" parent="CanvasLayer/Control"]
-layout_mode = 0
-offset_left = 69.0
-offset_top = 27.0
-offset_right = 270.0
-offset_bottom = 101.0
+[node name="Cash" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
 text = "$10,000"
 label_settings = SubResource("LabelSettings_q176i")
+
+[node name="HappinessProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(256, 28)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_7sdnu")
+value = 50.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HappinessProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Happiness"
+horizontal_alignment = 1
+
+[node name="EnergyProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(256, 28)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_n7ux5")
+value = 50.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/EnergyProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Energy"
+horizontal_alignment = 1
+
+[node name="EmissionsProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_81xpf")
+value = 50.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/EmissionsProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Emissions"
+horizontal_alignment = 1
