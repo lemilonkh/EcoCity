@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://vgwrcfy1qawf"]
+[gd_scene load_steps=35 format=3 uid="uid://vgwrcfy1qawf"]
 
 [ext_resource type="Script" path="res://scripts/builder.gd" id="1_jybm7"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_wp8s8"]
@@ -51,6 +51,13 @@ corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81xpf"]
 bg_color = Color(0.631373, 0.827451, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66jmx"]
+bg_color = Color(0.905882, 0.87451, 0, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
@@ -207,6 +214,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Emissions"
+horizontal_alignment = 1
+
+[node name="WasteProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_66jmx")
+value = 50.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/WasteProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Waste
+"
 horizontal_alignment = 1
 
 [node name="HelpButton" type="Button" parent="CanvasLayer/MarginContainer"]
