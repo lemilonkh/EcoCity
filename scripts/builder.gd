@@ -20,6 +20,9 @@ var index: int = 0 # Index of structure being built
 @export var emissions_bar:ProgressBar
 @export var waste_bar:ProgressBar
 
+@export var build_player:AudioStreamPlayer
+@export var error_player:AudioStreamPlayer
+
 var plane: Plane # Used for raycasting mouse
 var gridmap_position: Vector3
 
@@ -117,6 +120,10 @@ func get_mesh(packed_scene):
 					
 					return prop_value.duplicate()
 
+func play_error() -> void:
+	error_player.pitch_scale = randf_range(0.8, 1.2)
+	error_player.play()
+
 # Build (place) a structure
 func action_build(gridmap_position):
 	if Input.is_action_just_pressed("build"):
@@ -134,9 +141,9 @@ func action_build(gridmap_position):
 					decoration_grid.set_cell_item(gridmap_position, index, orientation)
 					was_built = true
 				else:
-					pass # TODO play error sound
+					play_error()
 			else:
-				pass # TODO play error sound
+				play_error()
 		else:
 			previous_tile = gridmap.get_cell_item(gridmap_position)
 			gridmap.set_cell_item(gridmap_position, index, orientation)
@@ -152,6 +159,8 @@ func action_build(gridmap_position):
 				waste += structure.waste
 				update_cash()
 				update_population()
+				build_player.pitch_scale = randf_range(0.8, 1.2)
+				build_player.play()
 
 # Demolish (remove) a structure
 func action_demolish(gridmap_position):
