@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://y3mbdmqnofaq"]
+
+[ext_resource type="Texture2D" uid="uid://v5vb372hxfhv" path="res://models/textures/solar_panel.png" id="1_8jbul"]
+
+[resource]
+resource_name = "colormap.001"
+cull_mode = 2
+albedo_texture = ExtResource("1_8jbul")
+texture_filter = 2
