@@ -2,9 +2,9 @@ extends Node3D
 
 @export var structures: Array[Structure] = []
 
-var map:DataMap
+var map: DataMap
 
-var index:int = 0 # Index of structure being built
+var index: int = 0 # Index of structure being built
 
 @export var selector:Node3D # The 'cursor'
 @export var selector_container:Node3D # Node that holds a preview of the structure
@@ -13,10 +13,9 @@ var index:int = 0 # Index of structure being built
 @export var decoration_grid:GridMap
 @export var cash_display:Label
 
-var plane:Plane # Used for raycasting mouse
+var plane: Plane # Used for raycasting mouse
 
 func _ready():
-	
 	map = DataMap.new()
 	plane = Plane(Vector3.UP, Vector3.ZERO)
 	
@@ -40,9 +39,7 @@ func _ready():
 	update_cash()
 
 func _process(delta):
-	
 	# Controls
-	
 	action_rotate() # Rotates selection 90 degrees
 	action_structure_toggle() # Toggles between structures
 	
@@ -50,7 +47,6 @@ func _process(delta):
 	action_load() # Loading
 	
 	# Map position based on mouse
-	
 	var world_position = plane.intersects_ray(
 		view_camera.project_ray_origin(get_viewport().get_mouse_position()),
 		view_camera.project_ray_normal(get_viewport().get_mouse_position()))
@@ -62,7 +58,6 @@ func _process(delta):
 	action_demolish(gridmap_position)
 
 # Retrieve the mesh from a PackedScene, used for dynamically creating a MeshLibrary
-
 func get_mesh(packed_scene):
 	var scene_state:SceneState = packed_scene.get_state()
 	for i in range(scene_state.get_node_count()):
@@ -75,31 +70,45 @@ func get_mesh(packed_scene):
 					return prop_value.duplicate()
 
 # Build (place) a structure
-
 func action_build(gridmap_position):
 	if Input.is_action_just_pressed("build"):
-		
-		var previous_tile = gridmap.get_cell_item(gridmap_position)
-		gridmap.set_cell_item(gridmap_position, index, gridmap.get_orthogonal_index_from_basis(selector.basis))
+		var structure: Structure = structures[index]
+		var previous_tile: int
+		var orientation = gridmap.get_orthogonal_index_from_basis(selector.basis)
+		if structure.is_decoration:
+			var item := gridmap.get_cell_item(gridmap_position)
+			if item != -1:
+				var base_structure: Structure = structures[item]
+				if base_structure.can_decorate:
+					previous_tile = decoration_grid.get_cell_item(gridmap_position)
+					decoration_grid.set_cell_item(gridmap_position, index, orientation)
+				else:
+					pass # TODO play error sound
+			else:
+				pass # TODO play error sound
+		else:
+			previous_tile = gridmap.get_cell_item(gridmap_position)
+			gridmap.set_cell_item(gridmap_position, index, orientation)
 		
 		if previous_tile != index:
-			map.cash -= structures[index].price
+			map.cash -= structure.price
 			update_cash()
 
 # Demolish (remove) a structure
-
 func action_demolish(gridmap_position):
 	if Input.is_action_just_pressed("demolish"):
-		gridmap.set_cell_item(gridmap_position, -1)
+		# delete decoration first
+		if decoration_grid.get_cell_item(gridmap_position) != -1:
+			decoration_grid.set_cell_item(gridmap_position, -1)
+		else:
+			gridmap.set_cell_item(gridmap_position, -1)
 
 # Rotates the 'cursor' 90 degrees
-
 func action_rotate():
 	if Input.is_action_just_pressed("rotate"):
 		selector.rotate_y(deg_to_rad(90))
 
 # Toggle between structures to build
-
 func action_structure_toggle():
 	if Input.is_action_just_pressed("structure_next"):
 		index = wrap(index + 1, 0, structures.size())
@@ -110,7 +119,6 @@ func action_structure_toggle():
 	update_structure()
 
 # Update the structure visual in the 'cursor'
-
 func update_structure():
 	# Clear previous structure preview in selector
 	for n in selector_container.get_children():
@@ -120,12 +128,11 @@ func update_structure():
 	var _model = structures[index].model.instantiate()
 	selector_container.add_child(_model)
 	_model.position.y += 0.25
-	
+
 func update_cash():
 	cash_display.text = "$" + str(map.cash)
 
 # Saving/load
-
 func action_save():
 	if Input.is_action_just_pressed("save"):
 		print("Saving map...")
@@ -137,16 +144,14 @@ func action_save():
 			data_structure.orientation = gridmap.get_cell_item_orientation(cell)
 			data_structure.structure = gridmap.get_cell_item(cell)
 			data_structure.is_decoration = false
-			
 			map.structures.append(data_structure)
 		
 		for cell in decoration_grid.get_used_cells():
 			var data_structure: DataStructure = DataStructure.new()
 			data_structure.position = Vector2i(cell.x, cell.z)
-			data_structure.orientation = gridmap.get_cell_item_orientation(cell)
-			data_structure.structure = gridmap.get_cell_item(cell)
+			data_structure.orientation = decoration_grid.get_cell_item_orientation(cell)
+			data_structure.structure = decoration_grid.get_cell_item(cell)
 			data_structure.is_decoration = true
-			
 			map.structures.append(data_structure)
 			
 		ResourceSaver.save(map, "user://map.res")
@@ -156,14 +161,16 @@ func action_load():
 		print("Loading map...")
 		
 		gridmap.clear()
+		decoration_grid.clear()
 		
 		map = ResourceLoader.load("user://map.res")
 		if not map:
 			map = DataMap.new()
 		for cell in map.structures:
+			var pos := Vector3i(cell.position.x, 0, cell.position.y)
 			if cell.is_decoration:
-				decoration_grid.set_cell_item(Vector3i(cell.position.x, 0, cell.position.y), cell.structure, cell.orientation)
+				decoration_grid.set_cell_item(pos, cell.structure, cell.orientation)
 			else:
-				gridmap.set_cell_item(Vector3i(cell.position.x, 0, cell.position.y), cell.structure, cell.orientation)
+				gridmap.set_cell_item(pos, cell.structure, cell.orientation)
 			
 		update_cash()
