@@ -7,3 +7,4 @@
 script = ExtResource("2_dr0db")
 model = ExtResource("1_trdpd")
 price = 20
+is_decoration = true
