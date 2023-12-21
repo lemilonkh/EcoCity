@@ -1,0 +1,14 @@
+{
+  "hidden_columns": {
+    "res://structures/": {
+      "resource_local_to_scene": true,
+      "resource_name": true
+    }
+  },
+  "recent_paths": [
+    "res://structures/"
+  ],
+  "table_functions": {
+
+  }
+}
