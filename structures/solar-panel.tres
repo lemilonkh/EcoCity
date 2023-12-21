@@ -11,6 +11,7 @@ emissions = 0
 energy = 10
 happiness = 0
 waste = 0
+inhabitants = 0
 is_decoration = true
 can_decorate = false
 decoration_height = 0
