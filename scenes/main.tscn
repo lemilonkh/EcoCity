@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://vgwrcfy1qawf"]
+[gd_scene load_steps=42 format=3 uid="uid://vgwrcfy1qawf"]
 
 [ext_resource type="Script" path="res://scripts/builder.gd" id="1_jybm7"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_wp8s8"]
@@ -34,6 +34,8 @@
 [ext_resource type="Texture2D" uid="uid://dywkqyi2luifa" path="res://sprites/cancel.svg" id="28_e5r5h"]
 [ext_resource type="AudioStream" uid="uid://bogpfjbpkrq0e" path="res://sounds/build.ogg" id="28_fuhlo"]
 [ext_resource type="AudioStream" uid="uid://cq47ijwdmynip" path="res://sounds/error.ogg" id="29_do8a0"]
+[ext_resource type="Texture2D" uid="uid://b4l6bdxkeguqc" path="res://sprites/pause-button.svg" id="33_13ngl"]
+[ext_resource type="Texture2D" uid="uid://c6yf74ewmxivv" path="res://sprites/play-button.svg" id="34_8xbfr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q176i"]
 font = ExtResource("16_vlub6")
@@ -71,7 +73,11 @@ corner_radius_bottom_left = 6
 [node name="Main" type="Node3D"]
 script = ExtResource("1_wp8s8")
 
-[node name="Builder" type="Node3D" parent="." node_paths=PackedStringArray("selector", "selector_container", "view_camera", "gridmap", "decoration_grid", "cash_display", "population_display", "structure_container", "happiness_bar", "energy_bar", "emissions_bar", "waste_bar", "build_player", "error_player")]
+[node name="YearTimer" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="Builder" type="Node3D" parent="." node_paths=PackedStringArray("selector", "selector_container", "view_camera", "gridmap", "decoration_grid", "cash_display", "population_display", "structure_container", "happiness_bar", "energy_bar", "emissions_bar", "waste_bar", "build_player", "error_player", "year_timer", "sun")]
 script = ExtResource("1_jybm7")
 structures = Array[Resource("res://scripts/structure.gd")]([ExtResource("2_bwyku"), ExtResource("3_o6o81"), ExtResource("3_6fpyf"), ExtResource("7_kqu4g"), ExtResource("8_1swhv"), ExtResource("4_b632v"), ExtResource("8_4il2q"), ExtResource("5_v5o2m"), ExtResource("6_f4603"), ExtResource("10_84or2"), ExtResource("12_8obn7"), ExtResource("13_ut2cy"), ExtResource("9_ifw7y"), ExtResource("10_vaeah"), ExtResource("13_t5d2v"), ExtResource("17_hkhri"), ExtResource("21_p6jmn"), ExtResource("18_b0jfa"), ExtResource("20_sf717"), ExtResource("22_iry6q"), ExtResource("23_wr1h4")])
 selector = NodePath("Selector")
@@ -88,6 +94,8 @@ emissions_bar = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/Emissions
 waste_bar = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/WasteProgressBar")
 build_player = NodePath("../BuildPlayer")
 error_player = NodePath("../ErrorPlayer")
+year_timer = NodePath("../YearTimer")
+sun = NodePath("../Sun")
 
 [node name="Selector" type="Node3D" parent="Builder"]
 
@@ -251,7 +259,22 @@ text = "Waste
 "
 horizontal_alignment = 1
 
-[node name="HelpButton" type="Button" parent="CanvasLayer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/separation = 16
+
+[node name="PauseButton" type="TextureButton" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("33_13ngl")
+texture_pressed = ExtResource("34_8xbfr")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="HelpButton" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -337,10 +360,12 @@ text = "[center]
 
 [b]Attributions[/b]
 
-City Builder Starter Kit by Kenney 
+City Builder Starter Kit by Kenney
+Ultimate Crops Pack by Quaternius
 Person icon by Delapouite under CC BY 3.0
 Cancel icon by sbed under CC BY 3.0
-Ultimate Crops Pack by Quaternius"
+Play button icon by Guard13007 under CC BY 3.0
+Pause button icon by Guard13007 under CC BY 3.0"
 
 [node name="CloseButton" type="TextureButton" parent="CanvasLayer/HelpOverlay/MarginContainer"]
 custom_minimum_size = Vector2(64, 64)
@@ -351,5 +376,7 @@ texture_normal = ExtResource("28_e5r5h")
 ignore_texture_size = true
 stretch_mode = 0
 
-[connection signal="pressed" from="CanvasLayer/MarginContainer/HelpButton" to="." method="_on_help_button_pressed"]
+[connection signal="timeout" from="YearTimer" to="Builder" method="_on_year_timer_timeout"]
+[connection signal="toggled" from="CanvasLayer/MarginContainer/HBoxContainer/PauseButton" to="Builder" method="_on_pause_button_toggled"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/HBoxContainer/HelpButton" to="." method="_on_help_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/HelpOverlay/MarginContainer/CloseButton" to="." method="_on_close_button_pressed"]

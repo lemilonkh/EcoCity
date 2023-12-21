@@ -1,5 +1,8 @@
 extends Node3D
 
+const TAXES_PER_CITIZEN := 10
+const MAX_EMISSIONS_GRANTS := 500
+
 @export var structures: Array[Structure] = []
 
 var map: DataMap
@@ -23,24 +26,27 @@ var index: int = 0 # Index of structure being built
 @export var build_player:AudioStreamPlayer
 @export var error_player:AudioStreamPlayer
 
+@export var year_timer:Timer
+@export var sun:DirectionalLight3D
+
 var plane: Plane # Used for raycasting mouse
 var gridmap_position: Vector3
 
-var happiness = 50:
+var happiness := 50:
 	set(value):
-		happiness = clampi(value, 0, 100)
+		happiness = value
 		happiness_bar.value = happiness
-var energy = 0:
+var energy := 0:
 	set(value):
-		energy = clampi(value, 0, 100)
+		energy = value
 		energy_bar.value = energy
-var emissions = 0:
+var emissions := 0:
 	set(value):
-		emissions = clampi(value, 0, 100)
+		emissions = value
 		emissions_bar.value = emissions
-var waste = 0:
+var waste := 0:
 	set(value):
-		waste = clampi(value, 0, 100)
+		waste = value
 		waste_bar.value = waste
 
 func _ready():
@@ -315,3 +321,13 @@ func action_load():
 		
 		update_cash()
 		update_population()
+
+func _on_year_timer_timeout() -> void:
+	map.cash += map.population * TAXES_PER_CITIZEN
+	var emissions_score: float = (100 - min(emissions, 100)) / 100.0
+	map.cash += int(MAX_EMISSIONS_GRANTS * emissions_score)
+	update_cash()
+
+func _on_pause_button_toggled(toggled_on: bool) -> void:
+	year_timer.paused = toggled_on
+	sun.light_energy = 0.1 if toggled_on else 1.0
