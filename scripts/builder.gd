@@ -12,6 +12,7 @@ var index: int = 0 # Index of structure being built
 @export var gridmap:GridMap
 @export var decoration_grid:GridMap
 @export var cash_display:Label
+@export var structure_container:HBoxContainer
 
 var plane: Plane # Used for raycasting mouse
 
