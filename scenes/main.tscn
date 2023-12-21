@@ -108,16 +108,20 @@ environment = ExtResource("1_yndf3")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+custom_minimum_size = Vector2(400, 0)
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
 [node name="CashIcon" type="TextureRect" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -145,7 +149,7 @@ text = "1742"
 label_settings = SubResource("LabelSettings_q176i")
 
 [node name="HappinessProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(256, 28)
+custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_7sdnu")
 value = 50.0
@@ -162,7 +166,7 @@ text = "Happiness"
 horizontal_alignment = 1
 
 [node name="EnergyProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(256, 28)
+custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_n7ux5")
 value = 50.0
@@ -204,6 +208,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_vertical = 8
+follow_focus = true
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ScrollContainer"]
 layout_mode = 2
@@ -221,6 +226,7 @@ size_flags_vertical = 3
 theme_override_constants/separation = 16
 
 [node name="StructureButton" type="TextureButton" parent="CanvasLayer/ScrollContainer/MarginContainer/StructureContainer"]
+texture_filter = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture_focused = ExtResource("26_dkafi")
