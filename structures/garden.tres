@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Structure" load_steps=3 format=3 uid="uid://6chy2tinhkta"]
+
+[ext_resource type="PackedScene" uid="uid://xix7n3qxgtsu" path="res://models/solar_panel.glb" id="1_8qinx"]
+[ext_resource type="Script" path="res://scripts/structure.gd" id="2_anb7s"]
+
+[resource]
+script = ExtResource("2_anb7s")
+model = ExtResource("1_8qinx")
+price = 40
+emissions = -10
+energy = 0
+happiness = 10
+waste = -10
+is_decoration = true
+can_decorate = false
+decoration_height = 0

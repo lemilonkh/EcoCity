@@ -6,4 +6,11 @@
 [resource]
 script = ExtResource("2_b2sah")
 model = ExtResource("1_nbdd1")
-price = 25
+price = 30
+emissions = 0
+energy = 0
+happiness = 0
+waste = 0
+is_decoration = false
+can_decorate = false
+decoration_height = 0

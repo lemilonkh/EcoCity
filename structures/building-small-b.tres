@@ -7,6 +7,10 @@
 script = ExtResource("2_a2t3e")
 model = ExtResource("1_klt7o")
 price = 60
+emissions = 30
+energy = 30
+happiness = 0
+waste = 30
 is_decoration = false
 can_decorate = true
-decoration_height = 0.0
+decoration_height = 1

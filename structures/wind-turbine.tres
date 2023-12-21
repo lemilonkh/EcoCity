@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Structure" load_steps=3 format=3 uid="uid://8bbjq0421xf1"]
+
+[ext_resource type="PackedScene" uid="uid://c5ommrdajv7gl" path="res://models/factory.glb" id="1_o2txf"]
+[ext_resource type="Script" path="res://scripts/structure.gd" id="2_jrxcf"]
+
+[resource]
+script = ExtResource("2_jrxcf")
+model = ExtResource("1_o2txf")
+price = 120
+emissions = 0
+energy = 30
+happiness = 0
+waste = 0
+is_decoration = false
+can_decorate = true
+decoration_height = 0
