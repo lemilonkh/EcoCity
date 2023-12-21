@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://euxdh7lkq0oj" path="res://models/road-intersection.glb" id="12_5gtmp"]
 [ext_resource type="PackedScene" uid="uid://mu30r6rmht07" path="res://models/road-split.glb" id="13_81spk"]
 [ext_resource type="PackedScene" uid="uid://5kchntr735l" path="res://models/road-straight-lightposts.glb" id="14_wijsu"]
-[ext_resource type="PackedScene" uid="uid://b4tgtg0j2dgh8" path="res://models/road-straight.glb" id="15_0diry"]
+[ext_resource type="PackedScene" uid="uid://xix7n3qxgtsu" path="res://models/road-straight.glb" id="15_0diry"]
 [ext_resource type="PackedScene" uid="uid://c5ommrdajv7gl" path="res://models/factory.glb" id="16_cg3hc"]
 [ext_resource type="PackedScene" uid="uid://xix7n3qxgtsu" path="res://models/solar_panel.glb" id="17_tmn56"]
 

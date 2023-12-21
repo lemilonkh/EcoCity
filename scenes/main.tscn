@@ -22,7 +22,7 @@
 [ext_resource type="FontFile" uid="uid://d0cxd77jybrcn" path="res://fonts/lilita_one_regular.ttf" id="16_vlub6"]
 [ext_resource type="Texture2D" uid="uid://bng0d1sou7c8a" path="res://sprites/coin.png" id="17_cjamx"]
 [ext_resource type="Resource" uid="uid://cb7cyjo6fsybw" path="res://structures/factory.tres" id="17_hkhri"]
-[ext_resource type="Resource" uid="uid://cvtghmhkt3t4d" path="res://structures/solar_panel.tres" id="18_re3r8"]
+[ext_resource type="Resource" uid="uid://c65ha65kdaxei" path="res://structures/solar-panel.tres" id="18_b0jfa"]
 [ext_resource type="MeshLibrary" uid="uid://dm1wpflr5hgq0" path="res://scenes/mesh_library.res" id="21_g83ro"]
 [ext_resource type="Texture2D" uid="uid://u0u3asxektpi" path="res://sprites/person.svg" id="24_6d7vr"]
 [ext_resource type="Texture2D" uid="uid://dad6weewiwylw" path="res://sprites/button_focus.png" id="26_dkafi"]
@@ -57,7 +57,7 @@ corner_radius_bottom_left = 6
 
 [node name="Builder" type="Node3D" parent="." node_paths=PackedStringArray("selector", "selector_container", "view_camera", "gridmap", "decoration_grid", "cash_display", "structure_container")]
 script = ExtResource("1_jybm7")
-structures = Array[Resource("res://scripts/structure.gd")]([ExtResource("2_bwyku"), ExtResource("3_o6o81"), ExtResource("3_6fpyf"), ExtResource("7_kqu4g"), ExtResource("8_1swhv"), ExtResource("4_b632v"), ExtResource("8_4il2q"), ExtResource("5_v5o2m"), ExtResource("6_f4603"), ExtResource("10_84or2"), ExtResource("12_8obn7"), ExtResource("13_ut2cy"), ExtResource("9_ifw7y"), ExtResource("10_vaeah"), ExtResource("13_t5d2v"), ExtResource("17_hkhri"), ExtResource("18_re3r8")])
+structures = Array[Resource("res://scripts/structure.gd")]([ExtResource("2_bwyku"), ExtResource("3_o6o81"), ExtResource("3_6fpyf"), ExtResource("7_kqu4g"), ExtResource("8_1swhv"), ExtResource("4_b632v"), ExtResource("8_4il2q"), ExtResource("5_v5o2m"), ExtResource("6_f4603"), ExtResource("10_84or2"), ExtResource("12_8obn7"), ExtResource("13_ut2cy"), ExtResource("9_ifw7y"), ExtResource("10_vaeah"), ExtResource("13_t5d2v"), ExtResource("17_hkhri"), ExtResource("18_b0jfa")])
 selector = NodePath("Selector")
 selector_container = NodePath("Selector/Container")
 view_camera = NodePath("../View/Camera")
