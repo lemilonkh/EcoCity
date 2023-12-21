@@ -10,6 +10,7 @@ class_name Structure
 @export var energy: int = 0 ## How much energy the building generates (+) or consumes (-)
 @export var happiness: int = 0 ## How happy the building makes the citizens
 @export var waste: int = 0 ## How much waste this building produces (+) or consumes (-)
+@export var inhabitants: int = 0 ## How many people can live in this building
 
 @export_subgroup("Decoration")
 @export var is_decoration: bool = false
