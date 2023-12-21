@@ -51,7 +51,6 @@ func _ready():
 	structure_container.remove_child(structure_button)
 	
 	var mesh_library := gridmap.mesh_library
-	print("Items ", mesh_library.get_item_list())
 	for item in mesh_library.get_item_list():
 		var icon := mesh_library.get_item_preview(item)
 		var button := structure_button.duplicate()
@@ -128,19 +127,7 @@ func play_error() -> void:
 func action_build(gridmap_position: Vector3i) -> void:
 	if Input.is_action_just_pressed("build"):
 		var structure: Structure = structures[index]
-		if map.cash < structure.price:
-			play_error()
-			return
-		if happiness + structure.happiness < 0:
-			play_error()
-			return
-		if energy + structure.energy < 0:
-			play_error()
-			return
-		if emissions + structure.emissions > 100:
-			play_error()
-			return
-		if waste + structure.waste > 100:
+		if check_errors(structure):
 			play_error()
 			return
 		
@@ -177,6 +164,40 @@ func action_build(gridmap_position: Vector3i) -> void:
 				update_population()
 				build_player.pitch_scale = randf_range(0.8, 1.2)
 				build_player.play()
+
+func check_errors(structure: Structure) -> bool:
+	var error = false
+	if map.cash < structure.price:
+		cash_display.modulate = Color.RED
+		error = true
+	else:
+		cash_display.modulate = Color.WHITE
+	
+	if happiness + structure.happiness < 0:
+		happiness_bar.modulate = Color.RED
+		error = true
+	else:
+		happiness_bar.modulate = Color.WHITE
+	
+	if energy + structure.energy < 0:
+		energy_bar.modulate = Color.RED
+		error = true
+	else:
+		energy_bar.modulate = Color.WHITE
+	
+	if emissions + structure.emissions > 100:
+		emissions_bar.modulate = Color.RED
+		error = true
+	else:
+		emissions_bar.modulate = Color.WHITE
+	
+	if waste + structure.waste > 100:
+		waste_bar.modulate = Color.RED
+		error = true
+	else:
+		waste_bar.modulate = Color.WHITE
+	
+	return error
 
 # Demolish (remove) a structure
 func action_demolish(gridmap_position: Vector3i):
@@ -232,6 +253,9 @@ func update_structure():
 	# Focus model on hotbar
 	if index < structure_container.get_child_count():
 		structure_container.get_child(index).grab_focus()
+	
+	# Highlight missing values in red
+	check_errors(structures[index])
 
 func update_cash():
 	cash_display.text = "$" + str(map.cash)
