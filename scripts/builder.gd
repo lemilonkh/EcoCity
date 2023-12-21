@@ -65,6 +65,9 @@ func _process(delta: float) -> void:
 
 # Controls
 func _unhandled_input(event: InputEvent) -> void:
+	if !event.is_pressed():
+		return
+
 	action_rotate() # Rotates selection 90 degrees
 	action_structure_toggle() # Toggles between structures
 
