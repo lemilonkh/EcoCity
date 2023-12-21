@@ -110,8 +110,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	action_save() # Saving
 	action_load() # Loading
 
-	action_build(gridmap_position)
-	action_demolish(gridmap_position)
+	action_build()
+	action_demolish()
 
 # Retrieve the mesh from a PackedScene, used for dynamically creating a MeshLibrary
 func get_mesh(packed_scene):
@@ -130,7 +130,7 @@ func play_error() -> void:
 	error_player.play()
 
 # Build (place) a structure
-func action_build(gridmap_position: Vector3i) -> void:
+func action_build() -> void:
 	if Input.is_action_just_pressed("build"):
 		var structure: Structure = structures[index]
 		if check_errors(structure):
@@ -206,7 +206,7 @@ func check_errors(structure: Structure) -> bool:
 	return error
 
 # Demolish (remove) a structure
-func action_demolish(gridmap_position: Vector3i):
+func action_demolish():
 	if Input.is_action_just_pressed("demolish"):
 		var previous_tile: int
 		# delete decoration first
@@ -327,6 +327,7 @@ func _on_year_timer_timeout() -> void:
 	var emissions_score: float = (100 - min(emissions, 100)) / 100.0
 	map.cash += int(MAX_EMISSIONS_GRANTS * emissions_score)
 	update_cash()
+	check_errors(structures[index])
 
 func _on_pause_button_toggled(toggled_on: bool) -> void:
 	year_timer.paused = toggled_on
