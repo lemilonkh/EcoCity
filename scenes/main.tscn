@@ -77,7 +77,10 @@ script = ExtResource("1_wp8s8")
 wait_time = 20.0
 autostart = true
 
-[node name="Builder" type="Node3D" parent="." node_paths=PackedStringArray("selector", "selector_container", "view_camera", "gridmap", "decoration_grid", "cash_display", "population_display", "structure_container", "happiness_bar", "energy_bar", "emissions_bar", "waste_bar", "build_player", "error_player", "year_timer", "sun")]
+[node name="TickTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="Builder" type="Node3D" parent="." node_paths=PackedStringArray("selector", "selector_container", "view_camera", "gridmap", "decoration_grid", "cash_display", "population_display", "structure_container", "happiness_bar", "energy_bar", "emissions_bar", "waste_bar", "build_player", "error_player", "year_timer", "tick_timer", "sun", "game_over_overlay", "score_label")]
 script = ExtResource("1_jybm7")
 structures = Array[Resource("res://scripts/structure.gd")]([ExtResource("2_bwyku"), ExtResource("3_o6o81"), ExtResource("3_6fpyf"), ExtResource("7_kqu4g"), ExtResource("8_1swhv"), ExtResource("4_b632v"), ExtResource("8_4il2q"), ExtResource("5_v5o2m"), ExtResource("6_f4603"), ExtResource("10_84or2"), ExtResource("12_8obn7"), ExtResource("13_ut2cy"), ExtResource("9_ifw7y"), ExtResource("10_vaeah"), ExtResource("13_t5d2v"), ExtResource("17_hkhri"), ExtResource("21_p6jmn"), ExtResource("18_b0jfa"), ExtResource("20_sf717"), ExtResource("22_iry6q"), ExtResource("23_wr1h4")])
 selector = NodePath("Selector")
@@ -95,7 +98,10 @@ waste_bar = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/WasteProgress
 build_player = NodePath("../BuildPlayer")
 error_player = NodePath("../ErrorPlayer")
 year_timer = NodePath("../YearTimer")
+tick_timer = NodePath("../TickTimer")
 sun = NodePath("../Sun")
+game_over_overlay = NodePath("../CanvasLayer/GameOverOverlay")
+score_label = NodePath("../CanvasLayer/GameOverOverlay/MarginContainer/VBoxContainer/ScoreLabel")
 
 [node name="Selector" type="Node3D" parent="Builder"]
 
@@ -376,7 +382,58 @@ texture_normal = ExtResource("28_e5r5h")
 ignore_texture_size = true
 stretch_mode = 0
 
+[node name="GameOverOverlay" type="ColorRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0980392, 0.0980392, 0.0980392, 0.803922)
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/GameOverOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameOverOverlay/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/GameOverOverlay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 40
+theme_override_font_sizes/bold_font_size = 60
+bbcode_enabled = true
+text = "[center]
+[b]GAME OVER[/b]
+Score (Population):"
+fit_content = true
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/GameOverOverlay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "1234"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/GameOverOverlay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = " Restart "
+
 [connection signal="timeout" from="YearTimer" to="Builder" method="_on_year_timer_timeout"]
+[connection signal="timeout" from="TickTimer" to="Builder" method="_on_tick_timer_timeout"]
 [connection signal="toggled" from="CanvasLayer/MarginContainer/HBoxContainer/PauseButton" to="Builder" method="_on_pause_button_toggled"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/HBoxContainer/HelpButton" to="." method="_on_help_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/HelpOverlay/MarginContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameOverOverlay/MarginContainer/VBoxContainer/RestartButton" to="Builder" method="restart"]

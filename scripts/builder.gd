@@ -27,14 +27,17 @@ var index: int = 0 # Index of structure being built
 @export var error_player:AudioStreamPlayer
 
 @export var year_timer:Timer
+@export var tick_timer:Timer
 @export var sun:DirectionalLight3D
+@export var game_over_overlay: Control
+@export var score_label: Label
 
 var plane: Plane # Used for raycasting mouse
 var gridmap_position: Vector3
 
 var happiness := 50:
 	set(value):
-		happiness = value
+		happiness = clamp(value, 0, 100)
 		happiness_bar.value = happiness
 var energy := 0:
 	set(value):
@@ -322,6 +325,21 @@ func action_load():
 		update_cash()
 		update_population()
 
+func restart() -> void:
+	game_over_overlay.hide()
+	gridmap.clear()
+	decoration_grid.clear()
+	
+	map = DataMap.new()
+	
+	happiness = map.happiness
+	energy = map.energy
+	emissions = map.emissions
+	waste = map.waste
+	
+	update_cash()
+	update_population()
+
 func _on_year_timer_timeout() -> void:
 	map.cash += map.population * TAXES_PER_CITIZEN
 	var emissions_score: float = (100 - min(emissions, 100)) / 100.0
@@ -331,4 +349,11 @@ func _on_year_timer_timeout() -> void:
 
 func _on_pause_button_toggled(toggled_on: bool) -> void:
 	year_timer.paused = toggled_on
+	tick_timer.paused = toggled_on
 	sun.light_energy = 0.1 if toggled_on else 1.0
+
+func _on_tick_timer_timeout() -> void:
+	happiness -= 1
+	if happiness <= 0:
+		game_over_overlay.show()
+		score_label.text = str(map.population)
