@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://vgwrcfy1qawf"]
+[gd_scene load_steps=38 format=3 uid="uid://vgwrcfy1qawf"]
 
 [ext_resource type="Script" path="res://scripts/builder.gd" id="1_jybm7"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_wp8s8"]
@@ -25,9 +25,12 @@
 [ext_resource type="Resource" uid="uid://cb7cyjo6fsybw" path="res://structures/factory.tres" id="17_hkhri"]
 [ext_resource type="Resource" uid="uid://c65ha65kdaxei" path="res://structures/solar-panel.tres" id="18_b0jfa"]
 [ext_resource type="Resource" uid="uid://6chy2tinhkta" path="res://structures/garden.tres" id="20_sf717"]
-[ext_resource type="MeshLibrary" uid="uid://dm1wpflr5hgq0" path="res://scenes/mesh_library.res" id="21_g83ro"]
+[ext_resource type="Resource" uid="uid://8bbjq0421xf1" path="res://structures/wind-turbine.tres" id="21_p6jmn"]
+[ext_resource type="Resource" uid="uid://cb8xyvsttpqb6" path="res://structures/waste-disposal.tres" id="22_iry6q"]
+[ext_resource type="Resource" uid="uid://5x6x35snf547" path="res://structures/waste-disposal-split.tres" id="23_wr1h4"]
 [ext_resource type="Texture2D" uid="uid://u0u3asxektpi" path="res://sprites/person.svg" id="24_6d7vr"]
 [ext_resource type="Texture2D" uid="uid://dad6weewiwylw" path="res://sprites/button_focus.png" id="26_dkafi"]
+[ext_resource type="MeshLibrary" uid="uid://dgakdrl1tvbgr" path="res://scenes/mesh_library.res" id="26_vvx4q"]
 [ext_resource type="Texture2D" uid="uid://dywkqyi2luifa" path="res://sprites/cancel.svg" id="28_e5r5h"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q176i"]
@@ -66,16 +69,21 @@ corner_radius_bottom_left = 6
 [node name="Main" type="Node3D"]
 script = ExtResource("1_wp8s8")
 
-[node name="Builder" type="Node3D" parent="." node_paths=PackedStringArray("selector", "selector_container", "view_camera", "gridmap", "decoration_grid", "cash_display", "structure_container")]
+[node name="Builder" type="Node3D" parent="." node_paths=PackedStringArray("selector", "selector_container", "view_camera", "gridmap", "decoration_grid", "cash_display", "population_display", "structure_container", "happiness_bar", "energy_bar", "emissions_bar", "waste_bar")]
 script = ExtResource("1_jybm7")
-structures = Array[Resource("res://scripts/structure.gd")]([ExtResource("2_bwyku"), ExtResource("3_o6o81"), ExtResource("3_6fpyf"), ExtResource("7_kqu4g"), ExtResource("8_1swhv"), ExtResource("4_b632v"), ExtResource("8_4il2q"), ExtResource("5_v5o2m"), ExtResource("6_f4603"), ExtResource("10_84or2"), ExtResource("12_8obn7"), ExtResource("13_ut2cy"), ExtResource("9_ifw7y"), ExtResource("10_vaeah"), ExtResource("13_t5d2v"), ExtResource("17_hkhri"), ExtResource("18_b0jfa"), ExtResource("20_sf717")])
+structures = Array[Resource("res://scripts/structure.gd")]([ExtResource("2_bwyku"), ExtResource("3_o6o81"), ExtResource("3_6fpyf"), ExtResource("7_kqu4g"), ExtResource("8_1swhv"), ExtResource("4_b632v"), ExtResource("8_4il2q"), ExtResource("5_v5o2m"), ExtResource("6_f4603"), ExtResource("10_84or2"), ExtResource("12_8obn7"), ExtResource("13_ut2cy"), ExtResource("9_ifw7y"), ExtResource("10_vaeah"), ExtResource("13_t5d2v"), ExtResource("17_hkhri"), ExtResource("21_p6jmn"), ExtResource("18_b0jfa"), ExtResource("20_sf717"), ExtResource("22_iry6q"), ExtResource("23_wr1h4")])
 selector = NodePath("Selector")
 selector_container = NodePath("Selector/Container")
 view_camera = NodePath("../View/Camera")
 gridmap = NodePath("../GridMap")
 decoration_grid = NodePath("../DecorationGrid")
 cash_display = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Cash")
+population_display = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Population")
 structure_container = NodePath("../CanvasLayer/ScrollContainer/MarginContainer/StructureContainer")
+happiness_bar = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/HappinessProgressBar")
+energy_bar = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/EnergyProgressBar")
+emissions_bar = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/EmissionsProgressBar")
+waste_bar = NodePath("../CanvasLayer/MarginContainer/VBoxContainer/WasteProgressBar")
 
 [node name="Selector" type="Node3D" parent="Builder"]
 
@@ -95,14 +103,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
 fov = 20.0
 
 [node name="GridMap" type="GridMap" parent="."]
-mesh_library = ExtResource("21_g83ro")
+mesh_library = ExtResource("26_vvx4q")
 cell_size = Vector3(1, 1, 1)
 cell_center_x = false
 cell_center_y = false
 cell_center_z = false
 
 [node name="DecorationGrid" type="GridMap" parent="."]
-mesh_library = ExtResource("21_g83ro")
+mesh_library = ExtResource("26_vvx4q")
 cell_size = Vector3(1, 0.4, 1)
 cell_center_x = false
 cell_center_y = false
@@ -186,7 +194,6 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_n7ux5")
-value = 50.0
 show_percentage = false
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/EnergyProgressBar"]
@@ -203,7 +210,6 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_81xpf")
-value = 50.0
 show_percentage = false
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/EmissionsProgressBar"]
@@ -220,7 +226,6 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_66jmx")
-value = 50.0
 show_percentage = false
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/WasteProgressBar"]

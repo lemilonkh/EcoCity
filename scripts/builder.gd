@@ -12,10 +12,33 @@ var index: int = 0 # Index of structure being built
 @export var gridmap:GridMap
 @export var decoration_grid:GridMap
 @export var cash_display:Label
+@export var population_display:Label
 @export var structure_container:HBoxContainer
+
+@export var happiness_bar:ProgressBar
+@export var energy_bar:ProgressBar
+@export var emissions_bar:ProgressBar
+@export var waste_bar:ProgressBar
 
 var plane: Plane # Used for raycasting mouse
 var gridmap_position: Vector3
+
+var happiness = 50:
+	set(value):
+		happiness = clampi(value, 0, 100)
+		happiness_bar.value = happiness
+var energy = 0:
+	set(value):
+		energy = clampi(value, 0, 100)
+		energy_bar.value = energy
+var emissions = 0:
+	set(value):
+		emissions = clampi(value, 0, 100)
+		emissions_bar.value = emissions
+var waste = 0:
+	set(value):
+		waste = clampi(value, 0, 100)
+		waste_bar.value = waste
 
 func _ready():
 	map = DataMap.new()
@@ -50,6 +73,7 @@ func _ready():
 	
 	update_structure()
 	update_cash()
+	update_population()
 
 func _on_structure_button_pressed(item: int) -> void:
 	index = item
@@ -98,7 +122,8 @@ func action_build(gridmap_position):
 	if Input.is_action_just_pressed("build"):
 		var structure: Structure = structures[index]
 		var previous_tile: int
-		var orientation = gridmap.get_orthogonal_index_from_basis(selector.basis)
+		var orientation := gridmap.get_orthogonal_index_from_basis(selector.basis)
+		var was_built := false
 		if structure.is_decoration:
 			var item := gridmap.get_cell_item(gridmap_position)
 			if item != -1:
@@ -107,6 +132,7 @@ func action_build(gridmap_position):
 					gridmap_position.y = base_structure.decoration_height
 					previous_tile = decoration_grid.get_cell_item(gridmap_position)
 					decoration_grid.set_cell_item(gridmap_position, index, orientation)
+					was_built = true
 				else:
 					pass # TODO play error sound
 			else:
@@ -114,19 +140,38 @@ func action_build(gridmap_position):
 		else:
 			previous_tile = gridmap.get_cell_item(gridmap_position)
 			gridmap.set_cell_item(gridmap_position, index, orientation)
+			was_built = true
 		
-		if previous_tile != index:
-			map.cash -= structure.price
-			update_cash()
+		if was_built:
+			if previous_tile != index:
+				map.cash -= structure.price
+				map.population += structure.inhabitants
+				happiness += structure.happiness
+				energy += structure.energy
+				emissions += structure.emissions
+				waste += structure.waste
+				update_cash()
+				update_population()
 
 # Demolish (remove) a structure
 func action_demolish(gridmap_position):
 	if Input.is_action_just_pressed("demolish"):
+		var previous_tile: int
 		# delete decoration first
 		if decoration_grid.get_cell_item(gridmap_position) != -1:
+			previous_tile = decoration_grid.get_cell_item(gridmap_position)
 			decoration_grid.set_cell_item(gridmap_position, -1)
 		else:
+			previous_tile = gridmap.get_cell_item(gridmap_position)
 			gridmap.set_cell_item(gridmap_position, -1)
+		
+		var previous_structure: Structure = structures[previous_tile]
+		map.population -= previous_structure.inhabitants
+		happiness -= previous_structure.happiness
+		energy -= previous_structure.energy
+		emissions -= previous_structure.emissions
+		waste -= previous_structure.waste
+		update_population()
 
 # Rotates the 'cursor' 90 degrees
 func action_rotate():
@@ -161,6 +206,9 @@ func update_structure():
 func update_cash():
 	cash_display.text = "$" + str(map.cash)
 
+func update_population():
+	population_display.text = str(map.population)
+
 # Saving/load
 func action_save():
 	if Input.is_action_just_pressed("save"):
@@ -182,7 +230,12 @@ func action_save():
 			data_structure.structure = decoration_grid.get_cell_item(cell)
 			data_structure.is_decoration = true
 			map.structures.append(data_structure)
-			
+		
+		map.happiness = happiness
+		map.energy = energy
+		map.emissions = emissions
+		map.waste = waste
+		
 		ResourceSaver.save(map, "user://map.res")
 	
 func action_load():
@@ -201,5 +254,11 @@ func action_load():
 				decoration_grid.set_cell_item(pos, cell.structure, cell.orientation)
 			else:
 				gridmap.set_cell_item(pos, cell.structure, cell.orientation)
-			
+		
+		happiness = map.happiness
+		energy = map.energy
+		emissions = map.emissions
+		waste = map.waste
+		
 		update_cash()
+		update_population()
