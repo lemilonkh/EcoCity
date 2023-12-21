@@ -3,8 +3,8 @@
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lg8b7"]
 sky_horizon_color = Color(0.67451, 0.682353, 0.698039, 1)
 sky_curve = 0.0175
-ground_bottom_color = Color(0.458824, 0.25098, 0.188235, 1)
-ground_horizon_color = Color(0.380392, 0.266667, 0.203922, 1)
+ground_bottom_color = Color(0, 0.376471, 0.27451, 1)
+ground_horizon_color = Color(0.105882, 0.380392, 0.176471, 1)
 ground_curve = 0.171484
 
 [sub_resource type="Sky" id="Sky_7bk1c"]
@@ -12,12 +12,12 @@ sky_material = SubResource("ProceduralSkyMaterial_lg8b7")
 
 [resource]
 background_mode = 2
-background_color = Color(0.560784, 0.592157, 0.670588, 1)
 sky = SubResource("Sky_7bk1c")
 ambient_light_source = 2
 ambient_light_color = Color(0.662745, 0.694118, 0.772549, 1)
 ambient_light_energy = 0.75
-tonemap_mode = 2
+tonemap_mode = 3
+tonemap_exposure = 1.2
 ssao_enabled = true
 ssao_radius = 0.25
 ssao_intensity = 0.5
