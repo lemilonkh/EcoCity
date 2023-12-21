@@ -10,6 +10,7 @@ var index:int = 0 # Index of structure being built
 @export var selector_container:Node3D # Node that holds a preview of the structure
 @export var view_camera:Camera3D # Used for raycasting mouse
 @export var gridmap:GridMap
+@export var decoration_grid:GridMap
 @export var cash_display:Label
 
 var plane:Plane # Used for raycasting mouse
@@ -33,6 +34,7 @@ func _ready():
 		mesh_library.set_item_mesh_transform(id, Transform3D())
 		
 	gridmap.mesh_library = mesh_library
+	decoration_grid.mesh_library = mesh_library
 	
 	update_structure()
 	update_cash()
@@ -127,15 +129,23 @@ func update_cash():
 func action_save():
 	if Input.is_action_just_pressed("save"):
 		print("Saving map...")
-		
 		map.structures.clear()
+		
 		for cell in gridmap.get_used_cells():
-			
-			var data_structure:DataStructure = DataStructure.new()
-			
+			var data_structure: DataStructure = DataStructure.new()
 			data_structure.position = Vector2i(cell.x, cell.z)
 			data_structure.orientation = gridmap.get_cell_item_orientation(cell)
 			data_structure.structure = gridmap.get_cell_item(cell)
+			data_structure.is_decoration = false
+			
+			map.structures.append(data_structure)
+		
+		for cell in decoration_grid.get_used_cells():
+			var data_structure: DataStructure = DataStructure.new()
+			data_structure.position = Vector2i(cell.x, cell.z)
+			data_structure.orientation = gridmap.get_cell_item_orientation(cell)
+			data_structure.structure = gridmap.get_cell_item(cell)
+			data_structure.is_decoration = true
 			
 			map.structures.append(data_structure)
 			
@@ -151,6 +161,9 @@ func action_load():
 		if not map:
 			map = DataMap.new()
 		for cell in map.structures:
-			gridmap.set_cell_item(Vector3i(cell.position.x, 0, cell.position.y), cell.structure, cell.orientation)
+			if cell.is_decoration:
+				decoration_grid.set_cell_item(Vector3i(cell.position.x, 0, cell.position.y), cell.structure, cell.orientation)
+			else:
+				gridmap.set_cell_item(Vector3i(cell.position.x, 0, cell.position.y), cell.structure, cell.orientation)
 			
 		update_cash()

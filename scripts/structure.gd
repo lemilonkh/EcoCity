@@ -5,4 +5,7 @@ class_name Structure
 @export var model:PackedScene # Model of the structure
 
 @export_subgroup("Gameplay")
-@export var price:int # Price of the structure when building
+@export var price: int # Price of the structure when building
+@export var is_decoration: bool = false
+@export var can_decorate: bool = false
+@export var decoration_height: float = 0.0
