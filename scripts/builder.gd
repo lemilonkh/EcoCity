@@ -65,6 +65,7 @@ func _process(delta: float) -> void:
 
 # Controls
 func _unhandled_input(event: InputEvent) -> void:
+	# prevent double activation for released events
 	if !event.is_pressed():
 		return
 
@@ -100,6 +101,7 @@ func action_build(gridmap_position):
 			if item != -1:
 				var base_structure: Structure = structures[item]
 				if base_structure.can_decorate:
+					gridmap_position.y = base_structure.decoration_height
 					previous_tile = decoration_grid.get_cell_item(gridmap_position)
 					decoration_grid.set_cell_item(gridmap_position, index, orientation)
 				else:
