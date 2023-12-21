@@ -15,46 +15,62 @@ var index: int = 0 # Index of structure being built
 @export var structure_container:HBoxContainer
 
 var plane: Plane # Used for raycasting mouse
+var gridmap_position: Vector3
 
 func _ready():
 	map = DataMap.new()
 	plane = Plane(Vector3.UP, Vector3.ZERO)
 	
+	var structure_button: TextureButton = structure_container.get_child(0)
+	structure_container.remove_child(structure_button)
+	
+	var mesh_library := gridmap.mesh_library
+	for item in mesh_library.get_item_list():
+		var icon := mesh_library.get_item_preview(item)
+		var button := structure_button.duplicate()
+		button.texture_normal = icon
+		button.pressed.connect(_on_structure_button_pressed.bind(item))
+		structure_container.add_child(button)
+	
 	# Create new MeshLibrary dynamically, can also be done in the editor
 	# See: https://docs.godotengine.org/en/stable/tutorials/3d/using_gridmaps.html
+	#var mesh_library = MeshLibrary.new()
 	
-	var mesh_library = MeshLibrary.new()
+	#for structure in structures:
+		#var id = mesh_library.get_last_unused_item_id()
+		#mesh_library.create_item(id)
+		#mesh_library.set_item_mesh(id, get_mesh(structure.model))
+		#mesh_library.set_item_mesh_transform(id, Transform3D())
 	
-	for structure in structures:
-		
-		var id = mesh_library.get_last_unused_item_id()
-		
-		mesh_library.create_item(id)
-		mesh_library.set_item_mesh(id, get_mesh(structure.model))
-		mesh_library.set_item_mesh_transform(id, Transform3D())
-		
-	gridmap.mesh_library = mesh_library
-	decoration_grid.mesh_library = mesh_library
+	#gridmap.mesh_library = mesh_library
+	#decoration_grid.mesh_library = mesh_library
 	
 	update_structure()
 	update_cash()
 
-func _process(delta):
-	# Controls
-	action_rotate() # Rotates selection 90 degrees
-	action_structure_toggle() # Toggles between structures
-	
-	action_save() # Saving
-	action_load() # Loading
-	
+func _on_structure_button_pressed(item: int) -> void:
+	index = item
+	update_structure()
+	print("Item", index)
+	get_viewport().set_input_as_handled()
+
+func _process(delta: float) -> void:
 	# Map position based on mouse
 	var world_position = plane.intersects_ray(
 		view_camera.project_ray_origin(get_viewport().get_mouse_position()),
 		view_camera.project_ray_normal(get_viewport().get_mouse_position()))
 
-	var gridmap_position = Vector3(round(world_position.x), 0, round(world_position.z))
+	gridmap_position = Vector3(round(world_position.x), 0, round(world_position.z))
 	selector.position = lerp(selector.position, gridmap_position, delta * 40)
-	
+
+# Controls
+func _unhandled_input(event: InputEvent) -> void:
+	action_rotate() # Rotates selection 90 degrees
+	action_structure_toggle() # Toggles between structures
+
+	action_save() # Saving
+	action_load() # Loading
+
 	action_build(gridmap_position)
 	action_demolish(gridmap_position)
 
@@ -129,6 +145,9 @@ func update_structure():
 	var _model = structures[index].model.instantiate()
 	selector_container.add_child(_model)
 	_model.position.y += 0.25
+	
+	# Focus model on hotbar
+	structure_container.get_child(index).grab_focus()
 
 func update_cash():
 	cash_display.text = "$" + str(map.cash)

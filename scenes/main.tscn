@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://vgwrcfy1qawf"]
+[gd_scene load_steps=31 format=3 uid="uid://vgwrcfy1qawf"]
 
 [ext_resource type="Script" path="res://scripts/builder.gd" id="1_jybm7"]
 [ext_resource type="Environment" uid="uid://jbptgqvstei3" path="res://scenes/main-environment.tres" id="1_yndf3"]
@@ -23,7 +23,9 @@
 [ext_resource type="Texture2D" uid="uid://bng0d1sou7c8a" path="res://sprites/coin.png" id="17_cjamx"]
 [ext_resource type="Resource" uid="uid://cb7cyjo6fsybw" path="res://structures/factory.tres" id="17_hkhri"]
 [ext_resource type="Resource" uid="uid://cvtghmhkt3t4d" path="res://structures/solar_panel.tres" id="18_re3r8"]
+[ext_resource type="MeshLibrary" uid="uid://dm1wpflr5hgq0" path="res://scenes/mesh_library.res" id="21_g83ro"]
 [ext_resource type="Texture2D" uid="uid://u0u3asxektpi" path="res://sprites/person.svg" id="24_6d7vr"]
+[ext_resource type="Texture2D" uid="uid://dad6weewiwylw" path="res://sprites/button_focus.png" id="26_dkafi"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q176i"]
 font = ExtResource("16_vlub6")
@@ -82,12 +84,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
 fov = 20.0
 
 [node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("21_g83ro")
 cell_size = Vector3(1, 1, 1)
 cell_center_x = false
 cell_center_y = false
 cell_center_z = false
 
 [node name="DecorationGrid" type="GridMap" parent="."]
+mesh_library = ExtResource("21_g83ro")
 cell_size = Vector3(1, 1, 1)
 cell_center_x = false
 cell_center_y = false
@@ -192,7 +196,7 @@ text = "Emissions"
 horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(0, 128)
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -208,4 +212,7 @@ size_flags_vertical = 3
 theme_override_constants/separation = 16
 
 [node name="StructureButton" type="TextureButton" parent="CanvasLayer/ScrollContainer/StructureContainer"]
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+texture_focused = ExtResource("26_dkafi")
+stretch_mode = 3
