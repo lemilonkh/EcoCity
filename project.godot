@@ -24,11 +24,10 @@ config/name="EcoCity"
 config/tags=PackedStringArray("starterkit")
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/resources_spreadsheet_view/plugin.cfg")
+enabled=PackedStringArray("res://addons/coi_serviceworker/plugin.cfg", "res://addons/resources_spreadsheet_view/plugin.cfg")
 
 [filesystem]
 
