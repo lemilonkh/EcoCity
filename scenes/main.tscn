@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://vgwrcfy1qawf"]
+[gd_scene load_steps=43 format=3 uid="uid://vgwrcfy1qawf"]
 
 [ext_resource type="Script" path="res://scripts/builder.gd" id="1_jybm7"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_wp8s8"]
@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://dywkqyi2luifa" path="res://sprites/cancel.svg" id="28_e5r5h"]
 [ext_resource type="AudioStream" uid="uid://bogpfjbpkrq0e" path="res://sounds/build.ogg" id="28_fuhlo"]
 [ext_resource type="AudioStream" uid="uid://cq47ijwdmynip" path="res://sounds/error.ogg" id="29_do8a0"]
+[ext_resource type="AudioStream" uid="uid://b881bd57vwoxw" path="res://sounds/field_of_dreams.ogg" id="29_k74lg"]
 [ext_resource type="Texture2D" uid="uid://b4l6bdxkeguqc" path="res://sprites/pause-button.svg" id="33_13ngl"]
 [ext_resource type="Texture2D" uid="uid://c6yf74ewmxivv" path="res://sprites/play-button.svg" id="34_8xbfr"]
 
@@ -145,6 +146,11 @@ environment = ExtResource("1_yndf3")
 [node name="BuildPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("28_fuhlo")
 bus = &"Sounds"
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("29_k74lg")
+autoplay = true
+bus = &"Music"
 
 [node name="ErrorPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("29_do8a0")
@@ -368,6 +374,7 @@ text = "[center]
 
 City Builder Starter Kit by Kenney
 Ultimate Crops Pack by Quaternius
+Music: The Field of Dreams by pauliuw
 Person icon by Delapouite under CC BY 3.0
 Cancel icon by sbed under CC BY 3.0
 Play button icon by Guard13007 under CC BY 3.0
